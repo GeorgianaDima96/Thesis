@@ -1,0 +1,12 @@
+clear all
+
+T = readtable('table_results.xlsx');
+
+r_range = [50 100 150 200]; 
+
+for count_r = 1:numel(r_range)
+
+idx = T.r == r_range(count_r) & T.f == 50 & T.x == 0;
+
+
+new_table = T(idx,:)

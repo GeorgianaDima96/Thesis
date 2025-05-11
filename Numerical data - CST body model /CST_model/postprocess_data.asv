@@ -1,0 +1,45 @@
+clear all
+
+T = readtable('table_results.xlsx');
+
+r_range = [50,100,150,200]; 
+x_range = [-65, 0, 65]
+count = 1
+
+figure 
+
+for count_x = 1:numel(x_range)
+    
+    for count_r = 1:numel(r_range)
+
+    idx = T.r == r_range(count_r) & T.f == 10 & T.x == x_range(count_x) & T.sigma ~= 0;
+    idx_0 = T.r == r_range(count_r) & T.f == 10 & T.x == x_range(count_x) & T.sigma == 0;
+    new_table = T(idx,:);
+    new_table_0 = T(idx_0,:);
+
+    subplot(3,2,count)
+    plot(new_table.sigma,abs(new_table.f_res-new_table_0.f_res)/new_table_0.f_res*100,linewidth = 3)
+    hold on 
+    grid on 
+    ylim([0,2])
+    xlim([min(new_table.sigma) max(new_table.sigma)])
+    ylabel('$\Delta f_\mathrm{res}/f_0$ [\%]',interpreter = 'latex',fontsize = 16)
+
+    subplot(3,2,count+1)
+    plot(new_table.sigma,abs(new_table.Q-new_table_0.Q)/new_table_0.Q*100,linewidth = 3)
+    hold on 
+    grid on 
+    ylim([75,100])
+    xlim([min(new_table.sigma) max(new_table.sigma)])
+    ylabel('$\Delta Q/Q_0$ [\%]',interpreter = 'latex',fontsize = 16)
+    end
+    count = count+2
+end
+
+for counter = 1:6
+subplot(3,2,counter)
+legend({'$r_0 = 50$ mm', '$r_0 = 100$ mm', '$r_0 = 150$ mm','$r_0 = 200$ mm'},interpreter = 'latex',fontsize = 14)
+xlabel('$\sigma$ [S/m]',interpreter ='latex',fontsize = 16)
+set(gca,'fontsize',16)
+end
+

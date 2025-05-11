@@ -1,0 +1,49 @@
+frequency_range = logspace(6,8,100)
+
+
+
+count = 1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Cartilage')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Bone Cortical')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:),sigma] = dispersion_material(frequency_range,'Blood')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Lung Inflated')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Lung Deflated')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Grey Matter')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'White Matter')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Muscle')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Fat')
+count = count+1
+[eps_real, eps_imag, skin_depth(count,:), sigma] = dispersion_material(frequency_range,'Skin (Dry)')
+
+
+for count_f = 1:numel(frequency_range)
+    skin_depth_mean(count_f) = mean(skin_depth(:,count_f));
+    skin_depth_min(count_f) = min(skin_depth(:,count_f));
+    skin_depth_max(count_f) = max(skin_depth(:,count_f));
+end
+
+figure()
+
+plot(frequency_range/1e6,skin_depth_mean*1e3,linewidth = 2,Color='red')
+
+plot(frequency_range/1e6,skin_depth_min*1e3,linewidth = 2,Color='black')
+plot(frequency_range/1e6,skin_depth_max*1e3,linewidth = 2,Color='black')
+
+
+
+xlim([1,100])
+legend({'Average','Min','Max','Variation_'},fontsize = 14,interpreter = 'latex')
+xlabel('$f$ [MHz]',fontsize = 16,interpreter = 'latex')
+ylabel('skin depth, $\delta$ [mm]',fontsize = 16, Interpreter='latex')
+xticks([10 30 50 70 90])
+yticks([60 80 100 200 400 600 800 1000])
+grid on 
+set(gca,'fontsize',16)
